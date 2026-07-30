@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>تفاصيل الكتاب</title>
+</head>
+<body style="background-color: #0f172a; color: #fff; font-family: sans-serif; padding: 20px;">
+    {% if book %}
+        <h1>تفاصيل الكتاب: {{ book.title|upper }}</h1>
+        <p>الكاتب: {{ book.author }}</p>
+        <p>السعر: ${{ book.price }}</p>
+        <p>عدد الصفحات: {{ book.pages }} صفحة</p>
+    {% else %}
+        <h2>الكتاب برقم ({{ book_id }}) غير موجود!</h2>
+    {% endif %}
+    
+    <a href="{% url 'books:home' %}" style="color: #38bdf8;">← العودة للقائمة الرئيسية</a>
+</body>
+</html>

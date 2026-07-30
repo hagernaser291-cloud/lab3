@@ -1,0 +1,19 @@
+# Virtual Environment (تجاهل مجلد البيئة الافتراضية)
+hh/
+venv/
+ENV/
+env/
+
+# Python Bytecode (تجاهل ملفات البايثون المؤقتة)
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Database (تجاهل قاعدة البيانات المحلية)
+*.sqlite3
+
+# Environment variables
+.env
+
+# VS Code settings
+.vscode/
