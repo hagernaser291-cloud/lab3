@@ -17,3 +17,11 @@ __pycache__/
 
 # VS Code settings
 .vscode/
+
+
+*.pyc
+__pycache__/
+db.sqlite3
+.venv/
+venv/
+.vscode/

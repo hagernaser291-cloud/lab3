@@ -87,7 +87,21 @@
     </style>
 </head>
 <body>
+      {% load book_filters %}
 
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>مكتبتي الرقمية</title>
+</head>
+<body>
+    <h2>{{ message }}</h2>
+
+    <p><b>حالة الكتاب قبل الفلتر:</b> {{ book_state }}</p>
+    <p><b>حالة الكتاب بعد الفلتر:</b> {{ book_state|book_status }}</p>
+</body>
+</html>
     <div class="card">
         <!-- استخدام الفلاتر المطلوبة -->
         <h1>📚 {{ app_title|upper }}</h1>

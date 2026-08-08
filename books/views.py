@@ -2,6 +2,7 @@ from django.shortcuts import render
 from datetime import datetime
 
 def home(request):
+    
     # 1. متغيرات محلية (Local Variables)
     app_title = "مكتبتي الرقمية - Software Engineering Lab"
     welcome_msg = "  WELCOME to Books Library Application!  "  # للـ filters
@@ -19,6 +20,8 @@ def home(request):
 
     # سياق البيانات المرسل للملف العرض
     context = {
+        "message":"welcome to books",
+        "book_state":"متوفر",
         "app_title": app_title,
         "welcome_msg": welcome_msg,
         "page_description": page_description,
