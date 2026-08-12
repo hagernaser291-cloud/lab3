@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}مكتبتي الرقمية{% endblock %}</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background-color: #f8f9fa; }
+        header { background-color: #5c4033; color: white; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; }
+        header a { color: white; text-decoration: none; margin-right: 15px; font-weight: bold; }
+        .header-btn { background-color: #8b5a2b; padding: 8px 15px; border-radius: 5px; }
+        .container { padding: 30px; max-width: 900px; margin: auto; }
+        form { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        button { background-color: #5c4033; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <!-- الهيدر الموحد لجميع الصفحات -->
+    <header>
+        <div>
+            <h2>📚 مكتبتي الرقمية</h2>
+        </div>
+        <nav>
+            <a href="{% url 'books:home' %}">الرئيسية</a>
+            
+            {% if user.is_authenticated %}
+                <span>مرحباً، <b>{{ user.username }}</b></span>
+                <a href="{% url 'account:logout' %}" class="header-btn">تسجيل الخروج</a>
+            {% else %}
+                <a href="{% url 'account:login' %}" class="header-btn">تسجيل الدخول</a>
+                <a href="{% url 'account:register' %}" class="header-btn">إنشاء حساب</a>
+            {% endif %}
+        </nav>
+    </header>
+
+    <!-- محتوى الصفحات الفرعية -->
+    <div class="container">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+</body>
+</html>

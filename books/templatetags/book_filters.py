@@ -5,16 +5,23 @@ register = template.Library()
 @register.filter(name='book_status')
 def book_status(value):
     """
-    فلتر مخصص لمشروع المكتبة يحول حالة الكتاب أو وصفه إلى نص تنسيقي مشجع
+    فلتر مخصص يفحص اسم الكتاب أو حالته ويعيد نص التوفر
     """
-    dictionary = {
-        "متوفر": "📗 متوفر حالياً في المكتبة",
-        "غير متوفر": "📕 غير متوفر حالياً",
-        "جديد": "⭐ إصدار جديد مميز",
+    if not value or str(value).strip() == "":
+        return "ادخل اسم الكتاب في البحث"
+
+    # قاموس يطابق أسماء الكتب مع حالتها
+    availability_map = {
+        "الحساسة": "📗 متوفر حالياً في المكتبة",
+        "clean code": "📗 متوفر حالياً في المكتبة",
+        "python crash course": "📗 متوفر حالياً في المكتبة",
+        "design patterns": "📕 غير متوفر حالياً",
+        "the pragmatic programmer": "📗 متوفر حالياً في المكتبة",
     }
     
-    text = str(value)
-    for key, replacement in dictionary.items():
-        text = text.replace(key, replacement)
-        
-    return text
+    text = str(value).strip().lower()
+    
+    if text in availability_map:
+        return availability_map[text]
+    
+    return "❓ كتاب غير مسجل في النظام"

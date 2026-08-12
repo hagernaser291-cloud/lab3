@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}إنشاء حساب جديد{% endblock %}
+
+{% block content %}
+<h2>إنشاء حساب جديد</h2>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">تسجيل الحساب</button>
+</form>
+{% endblock %}

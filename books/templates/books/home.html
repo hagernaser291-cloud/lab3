@@ -1,175 +1,184 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ app_title }}</title>
-    <style>
-        /* خلفية فاتحة جداً بدرجة العاجي/البيج الناعم */
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            background-color: #faf8f5; 
-            color: #4a423a; 
-            padding: 35px; 
-            line-height: 1.7;
-        }
+{% extends 'base.html' %}
+{% load book_filters %}
 
-        /* كروت بيضاء ناصعة بحواف بيج ناعمة جداً */
-        .card { 
-            background: #ffffff; 
-            padding: 28px; 
-            border-radius: 12px; 
-            margin-bottom: 25px; 
-            border: 1px solid #f0eae1;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
-        }
+{% block title %}{{ app_title }}{% endblock %}
 
-        /* عناوين بدرجة القهوة الهادئة */
-        h1, h2, h3 {
-            color: #7d6855;
-            margin-top: 0;
-            font-weight: 600;
-        }
+{% block content %}
+<style>
+    body { 
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+        background-color: #faf8f5; 
+        color: #4a423a; 
+    }
 
-        /* شارات التصنيف باللون الكريمه */
-        .badge { 
-            background: #f7f3ec; 
-            color: #7d6855; 
-            padding: 5px 14px; 
-            border-radius: 20px; 
-            font-size: 13px; 
-            font-weight: 600;
-            border: 1px solid #e8e0d5;
-        }
+    .card { 
+        background: #ffffff; 
+        padding: 28px; 
+        border-radius: 12px; 
+        margin-bottom: 25px; 
+        border: 1px solid #f0eae1;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+    }
 
-        /* جدول فاتح وبسيط جداً */
-        table { 
-            width: 100%; 
-            border-collapse: collapse; 
-            margin-top: 20px; 
-            background-color: #ffffff;
-            border-radius: 10px;
-            overflow: hidden;
-            border: 1px solid #f0eae1;
-        }
+    h1, h2, h3 {
+        color: #7d6855;
+        margin-top: 0;
+        font-weight: 600;
+    }
 
-        th { 
-            background-color: #f5f0eb; 
-            color: #635243;
-            padding: 14px;
-            font-weight: 600;
-            font-size: 15px;
-            border-bottom: 1px solid #e8e0d5;
-        }
+    .badge { 
+        background: #f7f3ec; 
+        color: #7d6855; 
+        padding: 5px 14px; 
+        border-radius: 20px; 
+        font-size: 13px; 
+        font-weight: 600;
+        border: 1px solid #e8e0d5;
+    }
 
-        td { 
-            border-bottom: 1px solid #f7f3ee; 
-            padding: 14px; 
-            text-align: center; 
-            color: #5c5247;
-        }
+    table { 
+        width: 100%; 
+        border-collapse: collapse; 
+        margin-top: 20px; 
+        background-color: #ffffff;
+        border-radius: 10px;
+        overflow: hidden;
+        border: 1px solid #f0eae1;
+    }
 
-        tr:hover {
-            background-color: #faf7f2;
-        }
+    th { 
+        background-color: #f5f0eb; 
+        color: #635243;
+        padding: 14px;
+        font-weight: 600;
+        font-size: 15px;
+        border-bottom: 1px solid #e8e0d5;
+    }
 
-        /* الروابط والأزرار */
-        .btn-link {
-            color: #947c66;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.2s;
-        }
+    td { 
+        border-bottom: 1px solid #f7f3ee; 
+        padding: 14px; 
+        text-align: center; 
+        color: #5c5247;
+    }
 
-        .btn-link:hover {
-            color: #635243;
-            text-decoration: underline;
-        }
-    </style>
-</head>
-<body>
-      {% load book_filters %}
+    tr:hover {
+        background-color: #faf7f2;
+    }
 
-<!DOCTYPE html>
-<html lang="ar">
-<head>
-    <meta charset="UTF-8">
-    <title>مكتبتي الرقمية</title>
-</head>
-<body>
-    <h2>{{ message }}</h2>
+    .btn-link {
+        color: #947c66;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.2s;
+    }
 
-    <p><b>حالة الكتاب قبل الفلتر:</b> {{ book_state }}</p>
-    <p><b>حالة الكتاب بعد الفلتر:</b> {{ book_state|book_status }}</p>
-</body>
-</html>
-    <div class="card">
-        <!-- استخدام الفلاتر المطلوبة -->
-        <h1>📚 {{ app_title|upper }}</h1>
-        <p>اسم التطبيق بحروف صغيرة: <i>{{ app_title|lower }}</i></p>
+    .btn-link:hover {
+        color: #635243;
+        text-decoration: underline;
+    }
 
-        <h3>{{ welcome_msg|title }}</h3>
+    .search-box {
+        margin-bottom: 15px;
+    }
 
-        <p>عدد حروف الوصف: <strong>{{ page_description|length }}</strong> حرف</p>
-        <p>التاريخ الحالي: <strong>{{ current_date|date:"Y-m-d H:i" }}</strong></p>
-    </div>
+    .search-box input {
+        padding: 8px 12px;
+        border: 1px solid #dcd6cd;
+        border-radius: 6px;
+        width: 250px;
+    }
 
-    <div class="card">
-        <h2>قائمة الكتب والمراجع المتاحة</h2>
+    .search-box button {
+        padding: 8px 16px;
+        background-color: #7d6855;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+    }
+</style>
 
-        {% if books %}
-            <table>
-                <thead>
+<div class="card">
+    <h1>📚 {{ app_title|upper }}</h1>
+    <p>اسم التطبيق بحروف صغيرة: <i>{{ app_title|lower }}</i></p>
+
+    <!-- قسم البحث مع الفلتر المخصص -->
+    <form method="GET" action="" class="search-box">
+        <input type="text" name="q" placeholder="ادخل اسم الكتاب للبحث..." value="{{ query }}">
+        <button type="submit">بحث</button>
+    </form>
+
+    {% if query %}
+        <div style="margin-top: 10px; padding: 12px; background-color: #f5f0eb; border-radius: 6px;">
+            <p style="margin: 0;"><b>الكتاب المطلوب:</b> {{ query }}</p>
+            <p style="margin: 5px 0 0 0;"><b>حالة التوفر  :</b> {{ query|book_status }}</p>
+        </div>
+    {% endif %}
+
+    <hr style="border: 0; border-top: 1px solid #f0eae1; margin: 20px 0;">
+
+    <h3>{{ welcome_msg|title }}</h3>
+    <p>عدد حروف الوصف: <strong>{{ page_description|length }}</strong> حرف</p>
+    <p>التاريخ الحالي: <strong>{{ current_date|date:"Y-m-d H:i" }}</strong></p>
+</div>
+
+<div class="card">
+    <h2>قائمة الكتب والمراجع المتاحة</h2>
+
+    {% if books %}
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>اسم الكتاب</th>
+                    <th>الكاتب</th>
+                    <th>السعر</th>
+                    <th>الفئة</th>
+                    <th>الحالة</th>
+                    <th>التفاصيل</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for book in books %}
                     <tr>
-                        <th>#</th>
-                        <th>اسم الكتاب</th>
-                        <th>الكاتب</th>
-                        <th>السعر</th>
-                        <th>الفئة</th>
-                        <th>الحالة</th>
-                        <th>التفاصيل</th>
+                        <td>{{ forloop.counter }}</td>
+                        <td><strong>{{ book.title|capfirst }}</strong></td>
+                        <td>{{ book.author|default:"غير معروف" }}</td>
+                        <td style="color: #947c66; font-weight: bold;">${{ book.price|floatformat:2 }}</td>
+                        <td><span class="badge">{{ book.category|slugify }}</span></td>
+                        <td>
+                            {% if book.is_available and book.price < 40 %}
+                                <span style="color: #388e3c; font-weight: 600;">متوفر (عرض ممتاز)</span>
+                            {% elif book.is_available %}
+                                <span style="color: #4caf50;">متوفر</span>
+                            {% else %}
+                                <span style="color: #e53935;">غير متوفر حالياً</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{% url 'books:detail' book.id %}" class="btn-link">عرض والتفاصيل ←</a>
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    {% for book in books %}
-                        <tr>
-                            <td>{{ forloop.counter }}</td>
-                            <td><strong>{{ book.title|capfirst }}</strong></td>
-                            <td>{{ book.author|default:"غير معروف" }}</td>
-                            <td style="color: #947c66; font-weight: bold;">${{ book.price|floatformat:2 }}</td>
-                            <td><span class="badge">{{ book.category|slugify }}</span></td>
-                            <td>
-                                {% if book.is_available and book.price < 40 %}
-                                    <span style="color: #388e3c; font-weight: 600;">متوفر (عرض ممتاز)</span>
-                                {% elif book.is_available %}
-                                    <span style="color: #4caf50;">متوفر</span>
-                                {% else %}
-                                    <span style="color: #e53935;">غير متوفر حالياً</span>
-                                {% endif %}
-                            </td>
-                            <td>
-                                <a href="{% url 'books:detail' book.id %}" class="btn-link">عرض والتفاصيل ←</a>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        {% else %}
-            <p>لا توجد كتب متاحة حالياً.</p>
-        {% endif %}
-    </div>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>لا توجد كتب متاحة حالياً.</p>
+    {% endif %}
+</div>
 
-    <div class="card">
-        <h3>اختبار القوائم الفارغة والـ Filters</h3>
-        <p>نتيجة القائمة الفارغة مع الفلتر default: <strong>{{ empty_list|default:"القائمة لا تحتوي على عناصر" }}</strong></p>
-        
-        <ul>
-            {% for item in empty_list %}
-                <li>{{ item }}</li>
-            {% empty %}
-                <li style="color: #8d7561;">تم تنفيذ وسم empty بنجاح: لا يوجد عناصر لعرضها.</li>
-            {% endfor %}
-        </ul>
-    </div>
+<div class="card">
+    <h3>اختبار القوائم الفارغة والـ Filters</h3>
+    <p>نتيجة القائمة الفارغة مع الفلتر default: <strong>{{ empty_list|default:"القائمة لا تحتوي على عناصر" }}</strong></p>
+    
+    <ul>
+        {% for item in empty_list %}
+            <li>{{ item }}</li>
+        {% empty %}
+            <li style="color: #8d7561;">تم تنفيذ وسم empty بنجاح: لا يوجد عناصر لعرضها.</li>
+        {% endfor %}
+    </ul>
+</div>
 
-</body>
-</html>
+{% endblock %}

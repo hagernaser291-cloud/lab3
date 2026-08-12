@@ -2,31 +2,36 @@ from django.shortcuts import render
 from datetime import datetime
 
 def home(request):
-    
-    # 1. متغيرات محلية (Local Variables)
+    # قراءة الكلمة المكتوبة في شريط البحث من طلب الـ GET
+    query = request.GET.get('q', '').strip()
+
     app_title = "مكتبتي الرقمية - Software Engineering Lab"
-    welcome_msg = "  WELCOME to Books Library Application!  "  # للـ filters
+    welcome_msg = "  WELCOME to Books Library Application!  "
     page_description = "تطبيق لإدارة ورصد الكتب والمراجع المتاحة"
     current_date = datetime.now()
-    empty_list = []  # لاختبار شرط القائمة الفارغة DTL
+    empty_list = []
 
-    # قائمة من القواميس تمثل بيانات الكتب
     books_list = [
         {"id": 1, "title": "clean code", "author": "Robert Martin", "price": 45.5, "pages": 464, "category": "software engineering", "is_available": True},
         {"id": 2, "title": "PYTHON CRASH COURSE", "author": "Eric Matthes", "price": 30.0, "pages": 544, "category": "programming", "is_available": True},
         {"id": 3, "title": "design patterns", "author": "Erich Gamma", "price": 55.0, "pages": 395, "category": "software architecture", "is_available": False},
         {"id": 4, "title": "THE PRAGMATIC PROGRAMMER", "author": "Andrew Hunt", "price": 50.0, "pages": 352, "category": "software engineering", "is_available": True},
+        {"id": 5, "title": "الحساسة", "author": "مؤلف مخصص", "price": 40.0, "pages": 200, "category": "literature", "is_available": True},
     ]
 
-    # سياق البيانات المرسل للملف العرض
+    # إذا قام المستخدم بالبحث عن كتاب معين، نقوم بتصفية القائمة
+    if query:
+        filtered_books = [b for b in books_list if query.lower() in b["title"].lower()]
+    else:
+        filtered_books = books_list
+
     context = {
-        "message":"welcome to books",
-        "book_state":"متوفر",
+        "query": query,  # النص المكتوب في شريط البحث للفلتر
         "app_title": app_title,
         "welcome_msg": welcome_msg,
         "page_description": page_description,
         "current_date": current_date,
-        "books": books_list,
+        "books": filtered_books,
         "empty_list": empty_list,
     }
     
