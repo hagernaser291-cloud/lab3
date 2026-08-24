@@ -1,19 +1,42 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <title>تفاصيل الكتاب</title>
-</head>
-<body style="background-color: #0f172a; color: #fff; font-family: sans-serif; padding: 20px;">
+{% extends "base.html" %}
+
+{% block title %}تفاصيل الكتاب{% endblock %}
+
+{% block content %}
+<section class="card">
     {% if book %}
-        <h1>تفاصيل الكتاب: {{ book.title|upper }}</h1>
-        <p>الكاتب: {{ book.author }}</p>
-        <p>السعر: ${{ book.price }}</p>
-        <p>عدد الصفحات: {{ book.pages }} صفحة</p>
+        <div class="eyebrow">BOOK DETAILS</div>
+        <h1>{{ book.title|upper }}</h1>
+        <p class="lead">تفاصيل الكتاب من مجموعة مكتبتي الرقمية.</p>
+
+        <p class="meta">الكاتب: <strong>{{ book.author }}</strong></p>
+        <p class="meta">عدد الصفحات: <strong>{{ book.pages_count }}</strong></p>
+        <p class="meta">السعر: <strong>${{ book.price|floatformat:2 }}</strong></p>
+        <p class="meta">
+            الفئة:
+            <span class="tag">{{ book.category|default:"عام" }}</span>
+        </p>
+
+        {% if book.description %}
+            <p class="lead">{{ book.description }}</p>
+        {% endif %}
+
+        {% if book.is_available %}
+            <p class="available">● الكتاب متوفر</p>
+        {% else %}
+            <p class="unavailable">● الكتاب غير متوفر حاليًا</p>
+        {% endif %}
+
+        {% if user.is_authenticated %}
+            <a class="button" href="{% url 'books:toggle_saved' book.id %}">
+                {% if is_saved %}إزالة من المحفوظة{% else %}حفظ الكتاب{% endif %}
+            </a>
+            <a class="button" href="{% url 'books:edit' book.id %}">تعديل الكتاب</a>
+        {% endif %}
     {% else %}
-        <h2>الكتاب برقم ({{ book_id }}) غير موجود!</h2>
+        <h2>الكتاب برقم {{ book_id }} غير موجود.</h2>
     {% endif %}
-    
-    <a href="{% url 'books:home' %}" style="color: #38bdf8;">← العودة للقائمة الرئيسية</a>
-</body>
-</html>
+
+    <p><a href="{% url 'books:home' %}">← العودة إلى الكتب</a></p>
+</section>
+{% endblock %}

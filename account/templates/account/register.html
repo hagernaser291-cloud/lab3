@@ -1,12 +1,17 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
-{% block title %}إنشاء حساب جديد{% endblock %}
+{% block title %}إنشاء حساب{% endblock %}
 
 {% block content %}
-<h2>إنشاء حساب جديد</h2>
-<form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">تسجيل الحساب</button>
-</form>
+<section class="card" style="max-width:650px; margin:30px auto;">
+    <div class="eyebrow">JOIN THE LIBRARY</div>
+    <h1>إنشاء حساب جديد</h1>
+    <p class="lead">أنشئ حسابك وابدأ بحفظ الكتب المفضلة لديك.</p>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="button" type="submit">إنشاء الحساب</button>
+    </form>
+</section>
 {% endblock %}

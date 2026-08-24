@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page_title|default:"بيانات الكتاب" }}{% endblock %}
+
+{% block content %}
+<section class="card">
+    <div class="eyebrow">LIBRARY FORM</div>
+    <h1>{{ page_title|default:"بيانات الكتاب" }}</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="button" type="submit">حفظ الكتاب</button>
+
+        {% if book %}
+            <a href="{% url 'books:detail' book.id %}">إلغاء</a>
+        {% else %}
+            <a href="{% url 'books:home' %}">إلغاء</a>
+        {% endif %}
+    </form>
+</section>
+{% endblock %}

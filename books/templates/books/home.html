@@ -1,184 +1,94 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load book_filters %}
 
-{% block title %}{{ app_title }}{% endblock %}
+{% block title %}{{ app_title|default:"مكتبتي الرقمية" }}{% endblock %}
 
 {% block content %}
-<style>
-    body { 
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-        background-color: #faf8f5; 
-        color: #4a423a; 
-    }
+<section class="card hero">
+    <div>
+        <div class="eyebrow">DIGITAL LIBRARY</div>
+        <h1>كل كتاب يفتح بابًا جديدًا.</h1>
+        <p class="lead">
+            {{ page_description|default:"تطبيق لإدارة ورصد الكتب والمراجع المتاحة" }}.
+            ابحث عن كتابك واستكشف مجموعتك بسهولة.
+        </p>
 
-    .card { 
-        background: #ffffff; 
-        padding: 28px; 
-        border-radius: 12px; 
-        margin-bottom: 25px; 
-        border: 1px solid #f0eae1;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.02);
-    }
+        <form method="get" class="search">
+            <input type="text" name="q" value="{{ query }}" placeholder="ابحث باسم الكتاب...">
+            <button class="button" type="submit">بحث</button>
+        </form>
+    </div>
 
-    h1, h2, h3 {
-        color: #7d6855;
-        margin-top: 0;
-        font-weight: 600;
-    }
+    <div class="hero-art">📚</div>
+</section>
 
-    .badge { 
-        background: #f7f3ec; 
-        color: #7d6855; 
-        padding: 5px 14px; 
-        border-radius: 20px; 
-        font-size: 13px; 
-        font-weight: 600;
-        border: 1px solid #e8e0d5;
-    }
+<section class="stats">
+    <div class="stat">
+        إجمالي الكتب
+        <strong>{{ total_books|default:"—" }}</strong>
+    </div>
+    <div class="stat">
+        متوسط السعر
+        <strong>
+            {% if average_price %}${{ average_price|floatformat:2 }}{% else %}—{% endif %}
+        </strong>
+    </div>
+    <div class="stat">
+        آخر تحديث
+        <strong>{{ current_date|date:"Y-m-d" }}</strong>
+    </div>
+</section>
 
-    table { 
-        width: 100%; 
-        border-collapse: collapse; 
-        margin-top: 20px; 
-        background-color: #ffffff;
-        border-radius: 10px;
-        overflow: hidden;
-        border: 1px solid #f0eae1;
-    }
+<section class="card">
+    <div class="section-heading">
+        <div>
+            <div class="eyebrow">COLLECTION</div>
+            <h2>الكتب والمراجع</h2>
+        </div>
 
-    th { 
-        background-color: #f5f0eb; 
-        color: #635243;
-        padding: 14px;
-        font-weight: 600;
-        font-size: 15px;
-        border-bottom: 1px solid #e8e0d5;
-    }
-
-    td { 
-        border-bottom: 1px solid #f7f3ee; 
-        padding: 14px; 
-        text-align: center; 
-        color: #5c5247;
-    }
-
-    tr:hover {
-        background-color: #faf7f2;
-    }
-
-    .btn-link {
-        color: #947c66;
-        text-decoration: none;
-        font-weight: 600;
-        transition: all 0.2s;
-    }
-
-    .btn-link:hover {
-        color: #635243;
-        text-decoration: underline;
-    }
-
-    .search-box {
-        margin-bottom: 15px;
-    }
-
-    .search-box input {
-        padding: 8px 12px;
-        border: 1px solid #dcd6cd;
-        border-radius: 6px;
-        width: 250px;
-    }
-
-    .search-box button {
-        padding: 8px 16px;
-        background-color: #7d6855;
-        color: white;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-    }
-</style>
-
-<div class="card">
-    <h1>📚 {{ app_title|upper }}</h1>
-    <p>اسم التطبيق بحروف صغيرة: <i>{{ app_title|lower }}</i></p>
-
-    <!-- قسم البحث مع الفلتر المخصص -->
-    <form method="GET" action="" class="search-box">
-        <input type="text" name="q" placeholder="ادخل اسم الكتاب للبحث..." value="{{ query }}">
-        <button type="submit">بحث</button>
-    </form>
+        {% if user.is_authenticated %}
+            <a class="button" href="{% url 'books:create' %}">+ إضافة كتاب</a>
+        {% endif %}
+    </div>
 
     {% if query %}
-        <div style="margin-top: 10px; padding: 12px; background-color: #f5f0eb; border-radius: 6px;">
-            <p style="margin: 0;"><b>الكتاب المطلوب:</b> {{ query }}</p>
-            <p style="margin: 5px 0 0 0;"><b>حالة التوفر  :</b> {{ query|book_status }}</p>
-        </div>
+        <p class="meta">
+            نتيجة البحث عن: <strong>{{ query }}</strong>
+            — {{ query|book_status }}
+        </p>
     {% endif %}
-
-    <hr style="border: 0; border-top: 1px solid #f0eae1; margin: 20px 0;">
-
-    <h3>{{ welcome_msg|title }}</h3>
-    <p>عدد حروف الوصف: <strong>{{ page_description|length }}</strong> حرف</p>
-    <p>التاريخ الحالي: <strong>{{ current_date|date:"Y-m-d H:i" }}</strong></p>
-</div>
-
-<div class="card">
-    <h2>قائمة الكتب والمراجع المتاحة</h2>
 
     {% if books %}
-        <table>
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>اسم الكتاب</th>
-                    <th>الكاتب</th>
-                    <th>السعر</th>
-                    <th>الفئة</th>
-                    <th>الحالة</th>
-                    <th>التفاصيل</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for book in books %}
-                    <tr>
-                        <td>{{ forloop.counter }}</td>
-                        <td><strong>{{ book.title|capfirst }}</strong></td>
-                        <td>{{ book.author|default:"غير معروف" }}</td>
-                        <td style="color: #947c66; font-weight: bold;">${{ book.price|floatformat:2 }}</td>
-                        <td><span class="badge">{{ book.category|slugify }}</span></td>
-                        <td>
-                            {% if book.is_available and book.price < 40 %}
-                                <span style="color: #388e3c; font-weight: 600;">متوفر (عرض ممتاز)</span>
-                            {% elif book.is_available %}
-                                <span style="color: #4caf50;">متوفر</span>
-                            {% else %}
-                                <span style="color: #e53935;">غير متوفر حالياً</span>
-                            {% endif %}
-                        </td>
-                        <td>
-                            <a href="{% url 'books:detail' book.id %}" class="btn-link">عرض والتفاصيل ←</a>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <div class="book-grid">
+            {% for book in books %}
+                <article class="book-card">
+                    <div class="book-cover">📖</div>
+                    <div class="book-title">{{ book.title|capfirst }}</div>
+                    <div class="meta">بواسطة {{ book.author|default:"غير معروف" }}</div>
+
+                    <p>
+                        <span class="tag">{{ book.category|default:"عام" }}</span>
+                    </p>
+
+                    <p class="meta">
+                        {{ book.pages_count }} صفحة
+                        · ${{ book.price|floatformat:2 }}
+                    </p>
+
+                    {% if book.is_available %}
+                        <p class="available">● متوفر</p>
+                    {% else %}
+                        <p class="unavailable">● غير متوفر حاليًا</p>
+                    {% endif %}
+
+                    <a class="button" href="{% url 'books:detail' book.id %}">
+                        عرض التفاصيل
+                    </a>
+                </article>
+            {% endfor %}
+        </div>
     {% else %}
-        <p>لا توجد كتب متاحة حالياً.</p>
+        <div class="empty">لا توجد كتب مطابقة للبحث حاليًا.</div>
     {% endif %}
-</div>
-
-<div class="card">
-    <h3>اختبار القوائم الفارغة والـ Filters</h3>
-    <p>نتيجة القائمة الفارغة مع الفلتر default: <strong>{{ empty_list|default:"القائمة لا تحتوي على عناصر" }}</strong></p>
-    
-    <ul>
-        {% for item in empty_list %}
-            <li>{{ item }}</li>
-        {% empty %}
-            <li style="color: #8d7561;">تم تنفيذ وسم empty بنجاح: لا يوجد عناصر لعرضها.</li>
-        {% endfor %}
-    </ul>
-</div>
-
+</section>
 {% endblock %}
