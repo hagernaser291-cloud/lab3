@@ -83,7 +83,10 @@
         }
 
         .nav-button { background: rgba(255,255,255,.16); }
-        .button:hover, .nav-button:hover { background: var(--purple-dark); transform: translateY(-1px); }
+        .button:hover, .nav-button:hover {
+            background: var(--purple-dark);
+            transform: translateY(-1px);
+        }
 
         .page {
             width: min(1180px, 92%);
@@ -256,6 +259,56 @@
         .helptext { color: var(--muted); font-size: .85rem; }
         .errorlist { color: var(--red); margin: 5px 0 10px; padding-right: 20px; }
 
+        /* تنسيق صفحة الإشعارات */
+        .page-card {
+            max-width: 900px;
+            margin: 32px auto;
+            padding: 28px;
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            box-shadow: var(--shadow);
+        }
+
+        .page-heading { margin-bottom: 22px; }
+
+        .page-heading h1 {
+            margin-bottom: 8px;
+            color: var(--navy);
+            font-size: 2rem;
+        }
+
+        .page-heading p { color: var(--muted); }
+
+        .notification-card {
+            margin-top: 14px;
+            padding: 18px;
+            border: 1px solid #eadfd6;
+            border-radius: 16px;
+            background: #fffaf6;
+        }
+
+        .notification-card.unread {
+            border-right: 5px solid var(--purple);
+        }
+
+        .notification-card h2 {
+            margin: 0 0 8px;
+            color: var(--navy);
+            font-size: 1.1rem;
+        }
+
+        .notification-card p {
+            margin: 0 0 8px;
+            color: var(--muted);
+            line-height: 1.8;
+        }
+
+        .notification-card small {
+            color: var(--purple);
+            font-weight: 700;
+        }
+
         @media (max-width: 720px) {
             .site-header { display: block; }
             .nav { margin-top: 16px; }
@@ -263,7 +316,10 @@
             .hero-art { margin-top: 22px; }
             .stats { grid-template-columns: 1fr; }
             .search { flex-direction: column; }
-            .section-heading { align-items: flex-start; flex-direction: column; }
+            .section-heading {
+                align-items: flex-start;
+                flex-direction: column;
+            }
         }
     </style>
 </head>
@@ -276,8 +332,10 @@
 
         <nav class="nav">
             <a href="{% url 'books:home' %}">الرئيسية</a>
+
             {% if user.is_authenticated %}
                 <span>مرحبًا، {{ user.username }}</span>
+                <a class="nav-button" href="{% url 'account:notifications' %}">الإشعارات</a>
                 <a class="nav-button" href="{% url 'account:logout' %}">تسجيل الخروج</a>
             {% else %}
                 <a class="nav-button" href="{% url 'account:login' %}">تسجيل الدخول</a>

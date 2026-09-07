@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}الإشعارات{% endblock %}
+
+{% block content %}
+<section class="page-card">
+    <div class="page-heading">
+        <p class="eyebrow">LIBRARY UPDATES</p>
+        <h1>إشعارات المكتبة</h1>
+        <p>آخر الأحداث المرتبطة بالكتب في مشروعك.</p>
+    </div>
+
+    {% for notification in notifications %}
+        <article class="notification-card {% if not notification.is_read %}unread{% endif %}">
+            <div>
+                <h2>{{ notification.title }}</h2>
+                <p>{{ notification.message }}</p>
+                <small>{{ notification.created_at|date:"Y-m-d H:i" }}</small>
+            </div>
+        </article>
+    {% empty %}
+        <p>لا توجد إشعارات حتى الآن.</p>
+    {% endfor %}
+</section>
+{% endblock %}

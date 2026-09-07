@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+     'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -38,18 +39,20 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'books',
-    'account',
+    #'account',
+    'account.apps.AccountConfig',
     
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "account.middleware.AuthenticatedAccountPagesMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -74,15 +77,14 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
-
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.getenv("DB_NAME", "library_db"),
-        "USER": os.getenv("DB_USER", "library_user"),
-        "PASSWORD": os.getenv("DB_PASSWORD", ""),
-        "HOST": os.getenv("DB_HOST", "127.0.0.1"),
-        "PORT": os.getenv("DB_PORT", "5432"),
+        "NAME": "library_db",
+        "USER": "library_user",
+        "PASSWORD": "20052007",  # كلمة المرور التي اخترتها لـ library_user
+        "HOST": "127.0.0.1",
+        "PORT": "5432",
     }
 }
 
@@ -122,3 +124,32 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+JAZZMIN_SETTINGS = {
+    "site_title": "مكتبتي الرقمية",
+    "site_header": "إدارة مكتبة الكتب",
+    "site_brand": "مكتبتي الرقمية",
+    "welcome_sign": "مرحبًا بك في إدارة مكتبة الكتب",
+    "copyright": "Software Engineering Lab",
+    "show_sidebar": True,
+    "navigation_expanded": True,
+    "search_model": [
+        "books.Book",
+        "account.UserAccount",
+    ],
+    "icons": {
+        "books": "fas fa-book",
+        "books.book": "fas fa-book-open",
+        "account": "fas fa-users",
+        "account.useraccount": "fas fa-user-circle",
+        "auth": "fas fa-shield-alt",
+        "auth.user": "fas fa-user",
+        "auth.group": "fas fa-users-cog",
+    },
+}
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'hagernaser291@gmail.com'        # بريدك الإلكتروني الحقيقي
+EMAIL_HOST_PASSWORD = 'ymye mlvc oqld stsd'         # كلمة مرور التطبيقات (App Password)
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
